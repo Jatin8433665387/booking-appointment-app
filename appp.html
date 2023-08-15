@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>booking appointment app</title>
+	</head>
+	<body>
+		<form>
+		name: <input type="name" name="type" maxlength="20" id="name">
+		email: <input type="email" name="type" maxlength="50" id="email">
+		phone no : <input type="phone no" maxlength="10" id="phoneno">
+		<button onclick="storage">submit</button>
+		</form>
+		<script>
+			let name = document.getElementById("name");
+			let email = document.getElementById("email");
+			let phoneno = document.getElementById("phoneno");
+			form.addEventListener("submit",function(event)){
+				event.preventDefault();
+			};
+			function event(email){
+    			let storage = locaclStorage.setItem(email);
+    		};
+		</script>
+	</body>
+</html>
