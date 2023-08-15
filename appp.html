@@ -1,24 +1,89 @@
-<html>
-	<head>
-		<title>booking appointment app</title>
-	</head>
-	<body>
-		<form>
-		name: <input type="name" name="type" maxlength="20" id="name">
-		email: <input type="email" name="type" maxlength="50" id="email">
-		phone no : <input type="phone no" maxlength="10" id="phoneno">
-		<button onclick="storage">submit</button>
-		</form>
-		<script>
-			let name = document.getElementById("name");
-			let email = document.getElementById("email");
-			let phoneno = document.getElementById("phoneno");
-			form.addEventListener("submit",function(event)){
-				event.preventDefault();
-			};
-			function event(email){
-    			let storage = locaclStorage.setItem(email);
-    		};
-		</script>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Appointment App</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Booking Appointment App</h1>
+        <form id="appointment-form">
+        	name: <input type="name" name="type" maxlength="20" id="name">
+			email: <input type="email" name="type" maxlength="50" id="email">
+			phone no : <input type="phone no" maxlength="10" id="phoneno">
+			<button onclick="storage">submit</button>
+        </form>
+        <div id="appointments-list"></div>
+    </div>
+    <script>
+    	const form = document.getElementById('appointment-form');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const appointmentsList = document.getElementById('appointments-list');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = nameInput.value;
+            const email = emailInput.value;
+            const phone = phoneInput.value;
+
+            if (name && email && phone) {
+                const appointment = { name, email, phone };
+                saveAppointment(appointment);
+                displayAppointments();
+            }
+            };
+
+        	function saveAppointment(appointment) {
+        	    let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+        	    appointments.push(appointment);
+        	    localStorage.setItem('appointments', JSON.stringify(appointments));
+        	}
+	
+	        function displayAppointments() {
+	        	appointmentsList.innerHTML = '';
+	        	const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+	        	    appointments.forEach((appointment, index) => {
+	        	        const appointmentDiv = document.createElement('div');
+	        	        appointmentDiv.className = 'appointment';
+	        	        appointmentDiv.innerHTML = `
+	        	            <strong>${appointment.name}</strong><br>
+	        	            Email: ${appointment.email}<br>
+	        	            Phone: ${appointment.phone}
+	        	        `;
+	        	        appointmentsList.appendChild(appointmentDiv);
+	        	    });
+        	}
+
+        displayAppointments();
+        function deleteAppointment(index) {
+            let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            appointments.splice(index, 1);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            displayAppointments();
+        }
+
+        function displayAppointments() {
+            appointmentsList.innerHTML = '';
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+            appointments.forEach((appointment, index) => {
+                const appointmentDiv = document.createElement('div');
+                appointmentDiv.className = 'appointment';
+                appointmentDiv.innerHTML = `
+                    <strong>${appointment.name}</strong><br>
+                    Email: ${appointment.email}<br>
+                    Phone: ${appointment.phone}<br>
+                    <button onclick="deleteAppointment(${index})">Delete</button>
+                `;
+                appointmentsList.appendChild(appointmentDiv);
+            });
+        }
+
+        displayAppointments();
+    </script>
+</body>
 </html>
